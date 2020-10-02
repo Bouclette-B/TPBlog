@@ -1,16 +1,18 @@
+h1.index {
+    margin-bottom: 50px;
+}
 h2 {
     background-color: aquamarine;
-    margin: 0px;
+    margin-bottom: 0px;
     font-size: medium;
     padding: 5px;
 }
 
-.post {
-    max-width: 50%;
-    margin-bottom: 20px;
+.article-info {
+    background-color: aquamarine;
 }
 
-.contenu {
+.article-content {
     background-color: #f0fff6;
     padding: 10px;
     margin: 0px;
@@ -22,4 +24,8 @@ nav.navbar {
 
 div.navbar-collapse {
     justify-content: flex-end;
+}
+
+div.row-button {
+    margin-top: 20px;
 }

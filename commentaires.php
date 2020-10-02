@@ -24,21 +24,35 @@
         $reponsePost->execute(array($idPost));
         $data = $reponsePost->fetch();
         if(empty($data)) {
-                    echo '<p>Article non trouvé.</p>';
-        } 
+            echo '<p>Article non trouvé.</p>';
+        }?> 
         
-        // Affichage du post
-        echo '<div class=post><h2>' . $data['titre'] . ', écrit le ' . $data['date'] . '</h2>';
-        echo '<p class=contenu>' . $data['contenu'] . '</p>';
+        <!-- Affichage du post -->
+        <div class="container">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <h2><?=$data['titre']?></h2>
+                    <p class="article-info"><em>Écrit le<?=$data['date']?></em></p>
+                    <p class="article-content"><?=$data['contenu']?></p>
+                </div>
+            </div>
+        <?php
         $reponsePost->closeCursor();
         
         // Affichage de l'espace commentaire + envoi de commentaires dans la base de données
         if(isset($idPost) && strlen($idPost) <= 3 && isset($_SESSION['pseudo'])){
-            ?><p><strong>COMMENTAIRES</strong></p>
-            <form action="" method="post">
-                <p><textarea name="content" cols="60" rows="5">Écrivez votre commentaire</textarea></p>
-                <p><input type="submit" value="Envoyer"></p>
-            </form><?php           
+            ?><div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <p><strong>COMMENTAIRES</strong></p>
+                    <form action="" method="post">
+                        <p><textarea name="content" cols="60" rows="5">Écrivez votre commentaire</textarea></p>
+                        <p><input type="submit" value="Envoyer"></p>
+                    </form>
+                </div>
+                <div class="col-2"></div>
+            </div><?php           
         }
 
         if(isset($_POST['content'])) {
@@ -50,15 +64,26 @@
         // Récupération & affichage des commentaires
         $reponseComment = $bdd->prepare('SELECT *, DATE_FORMAT(dateComment, \'%d/%m/%Y à %Hh%imin%ss\') AS dateComments FROM comments WHERE idPost = ? ORDER BY id DESC LIMIT 5');
         $reponseComment->execute(array($idPost));
-        while($data = $reponseComment->fetch()){
-            echo '<p><strong>' . $data['author'] . '</strong> le ' . $data['dateComments'] . '</p>';
-            echo '<p><em>' . $data['comment'] . '</em></p>';
+        while($data = $reponseComment->fetch()){?>
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8">
+                <p><strong><?=$data['author']?></strong>, le <?=$data['dateComments']?></p>
+                <p><em><?=$data['comment']?></em></p>
+                </div>
+            </div><?php
         }
         $reponseComment->closeCursor();
         
         ?>
-        <a href="index.php">Retour à l'accueil</a>
-
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <a href="index.php">Retour à l'accueil</a>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
         <!-- CSS only -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
