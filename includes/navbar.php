@@ -3,7 +3,7 @@ $pageTitleArray = array(
     'index' => 'Accueil',
     'inscription' => 'Inscription',
     'connexion' => 'Connexion',
-    'commentaires' => 'Article',
+    'article' => 'Article',
     'deconnexion' => 'Déconnexion');
 
     $getTitle = function () use ($pageTitleArray){
@@ -11,7 +11,7 @@ $pageTitleArray = array(
         $getPageUrl = end($getPageUrl);
         $getPageUrl = explode('.', $getPageUrl);
         $getPageUrl = $getPageUrl[0];
-        if($getPageUrl == 'commentaires'){
+        if($getPageUrl == 'article'){
             $getPageUrl = getArticleTitle();
         } else {
         $getPageUrl = $pageTitleArray[$getPageUrl];
