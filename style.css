@@ -1,0 +1,25 @@
+h2 {
+    background-color: aquamarine;
+    margin: 0px;
+    font-size: medium;
+    padding: 5px;
+}
+
+.post {
+    max-width: 50%;
+    margin-bottom: 20px;
+}
+
+.contenu {
+    background-color: #f0fff6;
+    padding: 10px;
+    margin: 0px;
+}
+
+nav.navbar {
+    display: flex;
+}
+
+div.navbar-collapse {
+    justify-content: flex-end;
+}
