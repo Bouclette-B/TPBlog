@@ -7,6 +7,6 @@
         header('Location: index.php');
     }
     require('model.php');
-    $req = checkPseudo ();
+    $req = checkPseudo ($db);
     require('./views/logInView.php');
     include('./includes/scripts.html');

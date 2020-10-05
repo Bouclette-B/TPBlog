@@ -3,5 +3,5 @@
     include('./includes/navbar.php');
     require('model.php');
 
-    $answer = getPosts();
+    $answer = getPosts($db);
     require('./views/indexView.php');

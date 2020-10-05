@@ -4,9 +4,9 @@
     require('model.php');
 
     $idPost = htmlspecialchars($_GET['id']);
-    $answerPost = selectPost($idPost);
-    insertComment($idPost);
-    $answerComment = getComments($idPost);
+    $answerPost = selectPost($db, $idPost);
+    insertComment($db, $idPost);
+    $answerComment = getComments($db, $idPost);
 
     require('./views/postView.php');
     include('./includes/scripts.html');
