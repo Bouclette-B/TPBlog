@@ -5,7 +5,7 @@ if(preg_match("#[^0-9]+#", $idPost)) {
     die();
 }
 
-$data = $reponsePost->fetch();
+$data = $answerPost->fetch();
         if(empty($data)) {
             echo '<p>Article non trouvé.</p>';
         }
@@ -21,7 +21,7 @@ $data = $reponsePost->fetch();
         </div>
     </div>
     <?php
-    $reponsePost->closeCursor();
+    $answerPost->closeCursor();
 
     if(isset($idPost) && strlen($idPost) <= 3 && isset($_SESSION['pseudo'])){
         ?><div class="row">
@@ -37,7 +37,7 @@ $data = $reponsePost->fetch();
         </div><?php           
         }
 
-    while($data = $reponseComment->fetch()){?>
+    while($data = $answerComment->fetch()){?>
         <div class="row">
             <div class="col-2"></div>
             <div class="col-8">
@@ -46,7 +46,7 @@ $data = $reponsePost->fetch();
             </div>
         </div><?php
     }
-    $reponseComment->closeCursor();?>
+    $answerComment->closeCursor();?>
     
     <div class="row">
         <div class="col-2"></div>

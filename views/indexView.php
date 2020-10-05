@@ -18,7 +18,7 @@
     </div>
 
 <?php
-while($data = $reponse->fetch())
+while($data = $answer->fetch())
     {?>
     <div class="container"></div>
         <div class="row">
@@ -26,7 +26,7 @@ while($data = $reponse->fetch())
             <div class="col-8">
                 <h2><?= strip_tags($data['titre']); ?> écrit le <?= strip_tags($data['date']); ?></h2>
                 <p class=contenu><?= strip_tags($data['contenu']); ?></p>
-                <a href="article.php?id=<?= strip_tags($data['id']); ?>">Commentaires...</a>
+                <a href="post.php?id=<?= strip_tags($data['id']); ?>">Commentaires...</a>
             </div>
             <div class="col-2"></div>
         </div><?php
@@ -45,5 +45,5 @@ while($data = $reponse->fetch())
         </div>
     </div>
 <?php 
-    $reponse->closeCursor();
+    $answer->closeCursor();
     include('./includes/scripts.html');?>

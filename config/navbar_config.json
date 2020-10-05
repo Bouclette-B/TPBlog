@@ -1,0 +1,32 @@
+[
+{
+    "everyone" : [
+        {
+        "Accueil" : "index.php"
+        }
+    ],
+    "logedIn" : [
+        {
+        "Déconnexion" : "logOut.php"
+        }
+    ],
+    "notLogedIn" : [
+        {
+        "Inscription" : "subscribe.php",
+        "Connexion" : "logIn.php"
+        }
+    ]
+},
+
+{
+    "pageTitleArray" : [
+         {
+        "index" : "Accueil",
+        "subscribe" : "Inscription",
+        "logIn" : "Connexion",
+        "post" : "Article",
+        "logOut" : "Déconnexion"
+         }
+    ]
+}
+]
