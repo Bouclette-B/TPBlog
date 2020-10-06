@@ -41,7 +41,7 @@
     <?php
     include('./includes/scripts.html');
 
-    if(!(checkForm($req))){
+    if(!(checkForm($member))){
         die();
     }?>
     <div class="row">

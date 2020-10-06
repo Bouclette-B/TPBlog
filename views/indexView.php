@@ -1,4 +1,3 @@
-
 <body>
     <div class="container container-title">
         <div class="row">
@@ -16,17 +15,16 @@
             <div class="col-2"></div>
         </div>
     </div>
-
-<?php
-while($data = $answer->fetch())
+    <?php
+    foreach ($posts as $post)
     {?>
     <div class="container"></div>
         <div class="row">
             <div class="col-2"></div>
             <div class="col-8">
-                <h2><?= strip_tags($data['titre']); ?> écrit le <?= strip_tags($data['date']); ?></h2>
-                <p class=contenu><?= strip_tags($data['contenu']); ?></p>
-                <a href="post.php?id=<?= strip_tags($data['id']); ?>">Commentaires...</a>
+                <h2><?= htmlspecialchars($post['titre']); ?> écrit le <?= htmlspecialchars($post['date']); ?></h2>
+                <p class=contenu><?= htmlspecialchars($post['contenu']); ?></p>
+                <a href="post.php?id=<?= htmlspecialchars($post['id']); ?>">Commentaires...</a>
             </div>
             <div class="col-2"></div>
         </div><?php
@@ -44,6 +42,4 @@ while($data = $answer->fetch())
             <div class="col-2"></div>
         </div>
     </div>
-<?php 
-    $answer->closeCursor();
-    include('./includes/scripts.html');?>
+<?php include('./includes/scripts.html');?>

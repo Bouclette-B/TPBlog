@@ -1,8 +1,8 @@
 <?php
 session_start();
-include('./includes/navbar.php');
+include('./includes/navbar/navbar.php');
 require('model.php');
-$req = checkPseudo($db);
+$member = getMember($db);
 
 function checkForm($req) {
     if (!($_SERVER['REQUEST_METHOD'] === 'POST')) {
@@ -79,7 +79,7 @@ function getCaptchaQuestion () {
 
 require('./views/subscribeView.php');
 
-if(!(checkForm($req))){
+if(!(checkForm($member))){
     die();
 }
 

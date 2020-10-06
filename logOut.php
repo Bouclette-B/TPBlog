@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('./includes/navbar.php');
+include('./includes/navbar/navbar.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_destroy();
         header('Location: index.php');

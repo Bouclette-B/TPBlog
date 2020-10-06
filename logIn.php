@@ -1,5 +1,5 @@
 <?php
-    include('./includes/navbar.php');
+    include('./includes/navbar/navbar.php');
     function setSessionStart() {
         session_start();
     }
@@ -7,6 +7,6 @@
         header('Location: index.php');
     }
     require('model.php');
-    $req = checkPseudo ($db);
+    $member = getMember($db);
     require('./views/logInView.php');
     include('./includes/scripts.html');

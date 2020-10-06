@@ -29,8 +29,7 @@ if(isset($_POST['pseudo']) && isset($_POST['passW'])) {
     $pseudo = htmlspecialchars($_POST['pseudo']);
     $passW = htmlspecialchars($_POST['passW']);
 
-    $result = $req->fetch();
-    $correctPassword = password_verify($passW, $result['passW']);
+    $correctPassword = password_verify($passW, $member['passW']);
 
     if(!$correctPassword){
         ?><div class="container">
@@ -46,5 +45,4 @@ if(isset($_POST['pseudo']) && isset($_POST['passW'])) {
         $_SESSION['id'] = $result['id'];
         setHeader();
     }
-    $req->closeCursor();
 }

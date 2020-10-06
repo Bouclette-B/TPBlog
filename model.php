@@ -12,22 +12,28 @@ function connectToDataBase() {
 }
 
 function getPosts($db) {
-    $answer = $db->query('SELECT *, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date FROM posts ORDER BY dateCreation LIMIT 5');
-    return $answer;
+    $postsArray = $db->query('SELECT *, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date FROM posts ORDER BY id DESC LIMIT 5');
+    $posts = $postsArray->fetchAll();
+    $postsArray->closeCursor();
+    return $posts;
 }
 
-function checkPseudo($db) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $req = $db->prepare('SELECT * FROM members WHERE pseudo = ?');
-        $req->execute(array($_POST['pseudo']));
-        return $req;
+function getMember($db) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $memberArray = $db->prepare('SELECT * FROM members WHERE pseudo = ?');
+        $member = $memberArray->execute(array($_POST['pseudo']));
+        $member = $memberArray->fetch();
+        $memberArray->closeCursor();
+        return $member;
     }
 }
 
-function selectPost($db, $idPost) {
-    $answerPost = $db->prepare('SELECT *, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date FROM posts WHERE id = ?');
-    $answerPost->execute(array($idPost));
-    return $answerPost;
+function getPost($db, $idPost) {
+    $postArray = $db->prepare('SELECT *, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date FROM posts WHERE id = ?');
+    $postArray->execute(array($idPost));
+    $post = $postArray->fetch();
+    $postArray->closeCursor();
+    return $post;
 }
 
 function insertComment($db, $idPost) {
@@ -39,9 +45,11 @@ function insertComment($db, $idPost) {
 }
 
 function getComments($db, $idPost) {
-    $answerComment = $db->prepare('SELECT *, DATE_FORMAT(dateComment, \'%d/%m/%Y à %Hh%imin%ss\') AS dateComments FROM comments WHERE idPost = ? ORDER BY id DESC LIMIT 5');
-    $answerComment->execute(array($idPost));
-    return $answerComment;
+    $commentsArray = $db->prepare('SELECT *, DATE_FORMAT(dateComment, \'%d/%m/%Y à %Hh%imin%ss\') AS dateComments FROM comments WHERE idPost = ? ORDER BY id DESC LIMIT 5');
+    $commentsArray->execute(array($idPost));
+    $comments = $commentsArray->fetchAll();
+    $commentsArray->closeCursor();
+    return $comments;
 }
 
 function addNewMember ($db, $passW, $pseudo, $email) {

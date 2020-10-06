@@ -1,7 +1,8 @@
 <?php
     session_start();
-    include('./includes/navbar.php');
     require('model.php');
+    include('./includes/navbar/navbar.php');
+    
 
-    $answer = getPosts($db);
+    $posts = getPosts($db);
     require('./views/indexView.php');
