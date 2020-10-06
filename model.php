@@ -63,4 +63,29 @@ function addNewMember ($db, $passW, $pseudo, $email) {
     $req->closeCursor();
 }
 
+function getPostTitle ($db) {
+    $idPost = htmlspecialchars($_GET['id']);
+    $reponsePost = $db->prepare('SELECT *, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date FROM posts WHERE id = ?');
+    $reponsePost->execute(array($idPost));
+    $data = $reponsePost->fetch();
+    echo $data['titre'];
+    $reponsePost->closeCursor();
+}
+
+function getPageTitle ($db){
+    $getPageUrl = explode('/', $_SERVER['SCRIPT_FILENAME']);
+    $getPageUrl = end($getPageUrl);
+    $getPageUrl = explode('.', $getPageUrl);
+    $getPageUrl = $getPageUrl[0];
+    $json = file_get_contents('./config/navbar_config.json');
+    $jsonInfo = json_decode($json, true);
+    $pageTitles = $jsonInfo[1]['pageTitleArray'][0];
+    if($getPageUrl == 'post'){
+        $pageTitle = getPostTitle($db);
+    } else {
+    $pageTitle = $pageTitles[$getPageUrl];
+    }
+    return $pageTitle;
+}
+
 $db = connectToDataBase();

@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <div class="container">
     <div class="row">
         <div class="col-3"></div>
@@ -15,3 +16,6 @@
         <div class="col-3"></div>
     </div>
 </div>
+<?php
+$content = ob_get_clean();
+require('./template/template.php');

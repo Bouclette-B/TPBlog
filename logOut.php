@@ -1,9 +1,9 @@
 <?php
 session_start();
-include('./includes/navbar/navbar.php');
+require('model.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_destroy();
         header('Location: index.php');
 }
-require('./views/logOutView.html');
-include('./includes/scripts.html');
+$pageTitle = getPageTitle($db);
+require('./views/logOutView.php');

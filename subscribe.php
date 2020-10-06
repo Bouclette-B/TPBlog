@@ -1,8 +1,8 @@
 <?php
 session_start();
-include('./includes/navbar/navbar.php');
 require('model.php');
 $member = getMember($db);
+$pageTitle = getPageTitle($db);
 
 function checkForm($req) {
     if (!($_SERVER['REQUEST_METHOD'] === 'POST')) {

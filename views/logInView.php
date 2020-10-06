@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <div class="container">
     <div class="row">
         <div class="col-3"></div>
@@ -46,3 +47,5 @@ if(isset($_POST['pseudo']) && isset($_POST['passW'])) {
         setHeader();
     }
 }
+$content = ob_get_clean();
+require('./template/template.php');
