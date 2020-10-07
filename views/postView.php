@@ -30,11 +30,13 @@ if(isset($idPost) && strlen($idPost) <= 3 && isset($_SESSION['pseudo'])){?>
         <div class="col-2"></div>
     </div>
 </div>
-<div class="container">
 <?php           
-}
+}?>
+<div class="container">
+<?php
 foreach($comments as $comment){
-    ?><div class="row">
+    ?>
+    <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
             <p><strong><?=$comment['author']?></strong>, le <?=$comment['dateComments']?></p>

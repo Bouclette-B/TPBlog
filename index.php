@@ -1,30 +1,33 @@
 <?php
-require ('controller.php');
+require ('./controller/controller.php');
 
-
-if(isset($_GET['action'])) {
-    $action = $_GET['action'];
-    if($action == 'listPosts') {
-        listPosts($db);
-    }
-    elseif ($action == 'post') {
-        if(isset($_GET['id']) && !(preg_match("#[^0-9]+#", $_GET['id']))) {
-            posts($db);
+try {
+    if(isset($_GET['action'])) {
+        $action = $_GET['action'];
+        if($action == 'listPosts') {
+            listPosts();
         }
-        else {
-            echo '<p>Article non trouvé.</p>';
+        elseif ($action == 'post') {
+            if(isset($_GET['id']) && !(preg_match("#[^0-9]+#", $_GET['id']))) { 
+                posts();
+            }
+        }
+        elseif ($action == 'logIn'){
+            logIn();
+        }
+        elseif ($action == 'subscribe') {
+            subscribe($db);
+        }
+        elseif ($action == 'logOut'){
+            logOut();
         }
     }
-    elseif ($action == 'logIn'){
-        logIn($db);
-    }
-    elseif ($action == 'subscribe') {
-        subscribe($db);
-    }
-    elseif ($action == 'logOut'){
-        logOut($db);
+    else {
+        listPosts();
     }
 }
-else {
-    listPosts($db);
+catch (Exception $e) {
+    $error = $e->getMessage();
+    $pageTitle = 'Erreur :(';
+    require('./views/errorView.php');
 }

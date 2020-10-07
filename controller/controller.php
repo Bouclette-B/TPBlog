@@ -1,5 +1,5 @@
 <?php
-require('model.php');
+require('./model/model.php');
 
 function listPosts() {
     session_start();
@@ -13,6 +13,9 @@ function posts() {
     $idPost = htmlspecialchars($_GET['id']);
     $postContent = (isset($_POST['content'])) ? htmlspecialchars($_POST['content']) : NULL;
     $post = getPost($idPost);
+    if(empty($post)){
+        throw new Exception('Article non trouvé.') ;
+    }
     insertComment($idPost, $postContent);
     $comments = getComments($idPost);
     $pageTitle = $post['titre'];
@@ -31,7 +34,6 @@ function subscribe($db) {
     session_start();
     $pageTitle = 'Inscription';
     $formError = "";
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $member = getMember($db, $_POST['pseudo']);
         $subscribeForm = [
@@ -50,7 +52,7 @@ function subscribe($db) {
     require('./views/subscribeView.php');
 }
 
-function logOut($db) {
+function logOut() {
     session_start();
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_destroy();
@@ -59,3 +61,4 @@ function logOut($db) {
     $pageTitle = 'Déconnexion';
     require('./views/logOutView.php');
 }
+
