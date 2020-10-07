@@ -7,7 +7,7 @@
     </div>
     <div class="row">
         <div class="col-3"></div>
-        <form action="subscribe.php" method="post" class="col-6">
+        <form action="index.php?action=subscribe" method="post" class="col-6">
             <div class="form-group">
                 <label for="pseudo">Pseudo :</label>
                 <input type="text" name="pseudo" class="form-control" required value="<?php writeUserInfo('pseudo')?>">
@@ -40,19 +40,61 @@
     </div>
     
     <?php
+        if(!empty($formError)){
+            ?>
+            <div class="row">
+                <div class="col-3"></div>
+            <div class="col-6 alert alert-danger">
+                <?= $formError; ?>
+            </div>
+            <div class="col-3"></div>
+            </div>
+            <?php
+        } else {
+            
+        }
 
-    if(!(checkForm($member))){
-        $content = ob_get_clean();
-        require('./template/template.php');
-        die();
-    }?>
-    <div class="row">
-        <div class="col-3"></div>
-        <p class="col-6">GG ! Inscription réussie :)</p>
-        <div class="col-3"></div>
-    </div> 
+function writeUserInfo($userInfo) {
+    if (isset($_POST[$userInfo])) {
+        echo htmlspecialchars($_POST[$userInfo]);
+    } else {
+        echo '';
+    }
+}
 
-<?php
+function getCaptchaQuestion () {
+    $questionArray = array(
+        'question1' => array(
+            'question' => 'Quelle est la couleur du petit chaperon rouge ?',
+            'answer' => array('rouge', 'red')
+        ),
+        'question2' => array(
+            'question' => 'Combien font deux plus deux ?',
+            'answer' => array('4', 'quatre')
+        ),
+        'question3' => array(
+            'question' => 'Dans "Blanche neige et les 7 nains", combien y a t-il de nains ?',
+            'answer' => array('sept', '7')
+        ),
+        'question4' => array(
+            'question' => 'Combien font cinq plus zéro ?',
+            'answer' => array('cinq', '5')
+        )
+    );
+    $idQuestionAsked = array_rand($questionArray);
+    $questionAsked = $questionArray[$idQuestionAsked]['question'];
+    $answerOfQuestionAsked = $questionArray[$idQuestionAsked]['answer'];
+    return [$questionAsked, $answerOfQuestionAsked];
+}
 $content = ob_get_clean();
 require('./template/template.php');
+
+function ggSubscribe() {?>
+    <div class="row">
+            <div class="col-3"></div>
+            <p class="col-6">GG ! Inscription réussie :)</p>
+            <div class="col-3"></div>
+        </div>
+        <?php ;
+}
 ?>

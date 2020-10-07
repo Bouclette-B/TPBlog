@@ -1,9 +1,5 @@
 <?php
 ob_start();
-if(preg_match("#[^0-9]+#", $idPost)) {
-    echo '<p>RATÉ !</p>';
-    die();
-}
 
 if(empty($post)) {
     echo '<p>Article non trouvé.</p>';

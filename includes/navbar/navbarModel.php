@@ -12,7 +12,7 @@ function writeNavBar () {
 function getNavLinks ($memberStatus) {
     $json = file_get_contents('./config/navbar_config.json');
     $jsonInfo = json_decode($json, true);
-    $navLinks = $jsonInfo[0][$memberStatus][0];
+    $navLinks = $jsonInfo[$memberStatus][0];
     foreach ($navLinks as $title => $url) {
         echo '<a href="' . $url . '"class=\'nav-link\'>' . $title . '</a>';
     }

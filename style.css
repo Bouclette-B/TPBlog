@@ -29,3 +29,8 @@ div.navbar-collapse {
 div.row-button {
     margin-top: 20px;
 }
+
+.alert-danger {
+    margin-top: 15px;
+    text-align: center;
+}

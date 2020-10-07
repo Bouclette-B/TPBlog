@@ -1,4 +1,11 @@
-<?php ob_start(); ?>
+<?php ob_start(); 
+function setSessionStart() {
+    session_start();
+}
+function setHeader() {
+    header('Location: index.php');
+}
+?>
 <div class="container">
     <div class="row">
         <div class="col-3"></div>

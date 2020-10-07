@@ -24,7 +24,7 @@ foreach ($posts as $post)
         <div class="col-8">
             <h2><?= htmlspecialchars($post['titre']); ?> écrit le <?= htmlspecialchars($post['date']); ?></h2>
             <p class=contenu><?= htmlspecialchars($post['contenu']); ?></p>
-            <a href="post.php?id=<?= htmlspecialchars($post['id']); ?>">Commentaires...</a>
+            <a href="index.php?action=post&amp;id=<?= htmlspecialchars($post['id']); ?>">Commentaires...</a>
         </div>
         <div class="col-2"></div>
     </div><?php
@@ -33,10 +33,10 @@ foreach ($posts as $post)
         <div class="col-2"></div>
         <div class="col-8">
             <?php if(!isset($_SESSION['pseudo'])){?>
-                <a class="btn btn-dark" href="inscription.php" role="button">S'inscrire</a>
-                <a href="connexion.php" class="btn btn-dark" role="button">Connexion</a><?php
+                <a class="btn btn-dark" href="index.php?action=subscribe" role="button">S'inscrire</a>
+                <a href="index.php?action=logIn" class="btn btn-dark" role="button">Connexion</a><?php
             } else {?>
-                <a class="btn btn-dark" href="deconnexion.php" role="button">Se déconnecter</a><?php
+                <a class="btn btn-dark" href="index.php?action=logOut" role="button">Se déconnecter</a><?php
             }?>
         </div>
         <div class="col-2"></div>

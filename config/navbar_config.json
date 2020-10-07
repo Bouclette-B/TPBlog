@@ -1,4 +1,3 @@
-[
 {
     "everyone" : [
         {
@@ -7,26 +6,13 @@
     ],
     "logedIn" : [
         {
-        "Déconnexion" : "logOut.php"
+        "Déconnexion" : "index.php?action=logOut"
         }
     ],
     "notLogedIn" : [
         {
-        "Inscription" : "subscribe.php",
-        "Connexion" : "logIn.php"
+        "Inscription" : "index.php?action=subscribe",
+        "Connexion" : "index.php?action=logIn"
         }
     ]
-},
-
-{
-    "pageTitleArray" : [
-         {
-        "index" : "Accueil",
-        "subscribe" : "Inscription",
-        "logIn" : "Connexion",
-        "post" : "Article",
-        "logOut" : "Déconnexion"
-         }
-    ]
 }
-]

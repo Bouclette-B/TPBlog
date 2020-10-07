@@ -11,24 +11,25 @@ function connectToDataBase() {
     return $db;
 }
 
-function getPosts($db) {
+function getPosts() {
+    $db = getDB();
     $postsArray = $db->query('SELECT *, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date FROM posts ORDER BY id DESC LIMIT 5');
     $posts = $postsArray->fetchAll();
     $postsArray->closeCursor();
     return $posts;
 }
 
-function getMember($db) {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $memberArray = $db->prepare('SELECT * FROM members WHERE pseudo = ?');
-        $member = $memberArray->execute(array($_POST['pseudo']));
-        $member = $memberArray->fetch();
-        $memberArray->closeCursor();
-        return $member;
-    }
+function getMember($pseudo) {
+    $db = getDB();
+    $memberArray = $db->prepare('SELECT * FROM members WHERE pseudo = ?');
+    $member = $memberArray->execute(array($pseudo));
+    $member = $memberArray->fetch();
+    $memberArray->closeCursor();
+    return $member;
 }
 
-function getPost($db, $idPost) {
+function getPost($idPost) {
+    $db = getDB();
     $postArray = $db->prepare('SELECT *, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date FROM posts WHERE id = ?');
     $postArray->execute(array($idPost));
     $post = $postArray->fetch();
@@ -36,15 +37,20 @@ function getPost($db, $idPost) {
     return $post;
 }
 
-function insertComment($db, $idPost) {
-    if(isset($_POST['content'])) {
-        $answer = $db->prepare('INSERT INTO comments (id, idPost, author, comment, dateComment) VALUES(NULL, ?, ?, ?, NOW())');
-        $answer->execute(array($idPost, $_SESSION['pseudo'], htmlspecialchars($_POST['content'])));
+function insertComment($idPost, $postContent) {
+    $db = getDB();
+    if(isset($postContent)){
+        $answer = $db->prepare('INSERT INTO comments (id, idPost, author, comment, dateComment) VALUES(NULL, :idPost, :author, :comment, NOW())');
+        $answer->execute(array(
+            'idPost' => $idPost, 
+            'author' => $_SESSION['pseudo'],
+            'comment' =>$postContent));
         $answer->closeCursor();
-    }
+        }
 }
 
-function getComments($db, $idPost) {
+function getComments($idPost) {
+    $db = getDB();
     $commentsArray = $db->prepare('SELECT *, DATE_FORMAT(dateComment, \'%d/%m/%Y à %Hh%imin%ss\') AS dateComments FROM comments WHERE idPost = ? ORDER BY id DESC LIMIT 5');
     $commentsArray->execute(array($idPost));
     $comments = $commentsArray->fetchAll();
@@ -52,7 +58,8 @@ function getComments($db, $idPost) {
     return $comments;
 }
 
-function addNewMember ($db, $passW, $pseudo, $email) {
+function addNewMember ($passW, $pseudo, $email) {
+    $db = getDB();
     $passW = password_hash($passW, PASSWORD_DEFAULT);
     $req = $db->prepare('INSERT INTO members (id, pseudo, passW, email, dateInscription) VALUES (NULL, :pseudo, :passW, :email, CURDATE())');
     $req->execute(array(
@@ -63,29 +70,35 @@ function addNewMember ($db, $passW, $pseudo, $email) {
     $req->closeCursor();
 }
 
-function getPostTitle ($db) {
-    $idPost = htmlspecialchars($_GET['id']);
-    $reponsePost = $db->prepare('SELECT *, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date FROM posts WHERE id = ?');
-    $reponsePost->execute(array($idPost));
-    $data = $reponsePost->fetch();
-    echo $data['titre'];
-    $reponsePost->closeCursor();
-}
-
-function getPageTitle ($db){
-    $getPageUrl = explode('/', $_SERVER['SCRIPT_FILENAME']);
-    $getPageUrl = end($getPageUrl);
-    $getPageUrl = explode('.', $getPageUrl);
-    $getPageUrl = $getPageUrl[0];
-    $json = file_get_contents('./config/navbar_config.json');
-    $jsonInfo = json_decode($json, true);
-    $pageTitles = $jsonInfo[1]['pageTitleArray'][0];
-    if($getPageUrl == 'post'){
-        $pageTitle = getPostTitle($db);
-    } else {
-    $pageTitle = $pageTitles[$getPageUrl];
+function checkForm($subscribeForm, &$errorMsg) {
+    $db = getDB();
+    $member = getMember($db, $subscribeForm["pseudo"]);
+    if (!empty($member['pseudo'])) {
+        $errorMsg = 'Ce pseudo est déjà pris !';
+        return false;
     }
-    return $pageTitle;
+
+    if (!($subscribeForm["passW"] === $subscribeForm["checkPassW"])) {
+        $errorMsg = 'Erreur de mot de passe.';
+        return false;
+    }
+
+    if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $subscribeForm["email"])) {
+        $errorMsg = 'Adresse mail non valide.';
+        return false;
+    }
+
+    if (!in_array($subscribeForm["userAnswer"], $_SESSION['answer'])) {
+        $errorMsg = 'Tu as mal répondu à la question. Essaie encore !';
+        return false;
+    }
+    
+    return true;
 }
 
+function getDB(){
+    global $db;
+    return $db;
+}
 $db = connectToDataBase();
+
