@@ -4,11 +4,9 @@ class UserManager extends Manager
 {
     public function getMember($pseudo) {
         $db = $this->dbConnect();
-        $memberArray = $db->prepare('SELECT * FROM members WHERE pseudo = ?');
-        $member = $memberArray->execute(array($pseudo));
-        $member = $memberArray->fetch();
-        $memberArray->closeCursor();
-        return $member;
+        $member = $db->prepare('SELECT * FROM members WHERE pseudo = ?');
+        $member->execute(array($pseudo));
+        return $member->fetch();
     }
 
     public function addNewMember ($passW, $pseudo, $email) {
@@ -21,5 +19,11 @@ class UserManager extends Manager
             'email' => $email
         ));
         $req->closeCursor();
+    }
+
+    public function isUserConnected() {
+        if(isset($_SESSION['pseudo'])){
+            return $_SESSION['pseudo'];
+        }return false;
     }
 }

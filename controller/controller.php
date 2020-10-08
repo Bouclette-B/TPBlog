@@ -12,17 +12,19 @@ function listPosts() {
     require('./views/listPostsView.php');
 }
 
-function posts() {
+function post() {
     session_start();
-    $idPost = htmlspecialchars($_GET['id']);
-    $postContent = (isset($_POST['content'])) ? htmlspecialchars($_POST['content']) : NULL;
+    $idPost = (isset($_GET['id']) && strlen($_GET['id'])) ? htmlspecialchars($_GET['id']) : NULL;
+    $comment = (isset($_POST['content'])) ? htmlspecialchars($_POST['content']) : NULL;
     $postManager = new PostManager();
+    $userManager = new UserManager();
     $post = $postManager->getPost($idPost);
     if(empty($post)){
         throw new Exception('Article non trouvé.');
     }
     $commentManager = new CommentManager;
-    $commentManager->insertComment($idPost, $postContent);
+    $connectedUser = $userManager->isUserConnected();
+    $commentManager->insertComment($idPost, $comment);
     $comments = $commentManager->getComments($idPost);
     $pageTitle = $post['titre'];
     require('./views/postView.php');
@@ -50,7 +52,7 @@ function subscribe() {
             "passW" => htmlspecialchars($_POST['passW']),
             "checkPassW" => htmlspecialchars($_POST['checkPassW']),
             "email" => htmlspecialchars($_POST['email']),
-            "userAnswer" => htmlspecialchars($_POST['captchaAnswer']),
+            "userAnswer" => htmlspecialchars($_POST['captchaAnswer'])
         ];
         if($formChecker->checkForm($subscribeForm, $formError)){
             $userManager->addNewMember($subscribeForm["passW"], $subscribeForm["pseudo"], $subscribeForm["email"]);
@@ -59,7 +61,6 @@ function subscribe() {
         }
     }
     require('./views/subscribeView.php');
-
 }
 
 function logOut() {

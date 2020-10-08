@@ -1,9 +1,6 @@
 <?php
 ob_start();
-
-if(empty($post)) {
-    echo '<p>Article non trouvé.</p>';
-}?> 
+?> 
 <div class="container">
     <div class="row">
         <div class="col-2"></div>
@@ -16,7 +13,7 @@ if(empty($post)) {
 </div>
 
 <?php 
-if(isset($idPost) && strlen($idPost) <= 3 && isset($_SESSION['pseudo'])){?>
+if($connectedUser){?>
 <div class="container">
     <div class="row">
         <div class="col-2"></div>
@@ -39,7 +36,11 @@ foreach($comments as $comment){
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
-            <p><strong><?=$comment['author']?></strong>, le <?=$comment['dateComments']?><em><a href="index.php?action=modifyComment&amp;id=<?=$comment['id']?>"> Modifier</a></em></p>
+            <p><strong><?=$comment['author']?></strong>, le <?=$comment['dateComments']?>
+            <?php if($connectedUser == $comment['author']) {
+                ?><em><a href="index.php?action=modifyComment&amp;id=<?=$comment['id']?>"> Modifier</a></em>
+                <?php }
+                ?></p>
             <p><em><?=$comment['comment']?></em></p>
         </div>
         <div class="col-2"></div>

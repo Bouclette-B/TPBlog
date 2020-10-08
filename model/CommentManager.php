@@ -1,34 +1,30 @@
 <?php
 class CommentManager extends Manager
 {
-    public function insertComment($idPost, $postContent) {
+    public function insertComment($idPost, $comment) {
         $db = $this->dbConnect();
-        if(isset($postContent)){
+        if(isset($comment)){
             $answer = $db->prepare('INSERT INTO comments (id, idPost, author, comment, dateComment) VALUES(NULL, :idPost, :author, :comment, NOW())');
             $answer->execute(array(
                 'idPost' => $idPost, 
                 'author' => $_SESSION['pseudo'],
-                'comment' =>$postContent));
+                'comment' =>$comment));
             $answer->closeCursor();
             }
     }
 
     public function getComments($idPost) {
         $db = $this->dbConnect();
-        $commentsArray = $db->prepare('SELECT *, DATE_FORMAT(dateComment, \'%d/%m/%Y à %Hh%imin%ss\') AS dateComments FROM comments WHERE idPost = ? ORDER BY id DESC LIMIT 5');
-        $commentsArray->execute(array($idPost));
-        $comments = $commentsArray->fetchAll();
-        $commentsArray->closeCursor();
-        return $comments;
+        $comments = $db->prepare('SELECT *, DATE_FORMAT(dateComment, \'%d/%m/%Y à %Hh%imin%ss\') AS dateComments FROM comments WHERE idPost = ? ORDER BY id DESC LIMIT 5');
+        $comments->execute(array($idPost));
+        return $comments->fetchAll();;
     }
     
     public function getComment($idComment) {
         $db = $this->dbConnect();
-        $commentArray = $db->prepare('SELECT *, DATE_FORMAT(dateComment, \'%d/%m/%Y à %Hh%imin%ss\') AS dateComments FROM comments WHERE id = ?');
-        $commentArray->execute(array($idComment));
-        $comment = $commentArray->fetch();
-        $commentArray->closeCursor();
-        return $comment;
+        $comment = $db->prepare('SELECT *, DATE_FORMAT(dateComment, \'%d/%m/%Y à %Hh%imin%ss\') AS dateComments FROM comments WHERE id = ?');
+        $comment->execute(array($idComment));
+        return $comment->fetch();
     }
 
     public function updateComment($newComment, $idComment, $idPost) {

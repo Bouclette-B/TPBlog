@@ -29,7 +29,6 @@ class FormChecker
             $errorMsg = 'Tu as mal répondu à la question. Essaie encore !';
             return false;
         }
-        
         return true;
     }
 }
