@@ -1,9 +1,12 @@
 <?php
 require('./model/model.php');
+require_once('./model/PostManager.php');
+require_once('./model/CommentManager.php');
 
 function listPosts() {
     session_start();
-    $posts = getPosts();
+    $postManager = new \Bouclette\TPBlog\Model\PostManager();
+    $posts = $postManager->getPosts();
     $pageTitle = 'Accueil';
     require('./views/listPostsView.php');
 }
@@ -12,12 +15,14 @@ function posts() {
     session_start();
     $idPost = htmlspecialchars($_GET['id']);
     $postContent = (isset($_POST['content'])) ? htmlspecialchars($_POST['content']) : NULL;
-    $post = getPost($idPost);
+    $postManager = new \Bouclette\TPBlog\Model\PostManager();
+    $post = $postManager->getPost($idPost);
     if(empty($post)){
-        throw new Exception('Article non trouvé.') ;
+        throw new Exception('Article non trouvé.');
     }
-    insertComment($idPost, $postContent);
-    $comments = getComments($idPost);
+    $commentManager = new \Bouclette\TPBlog\Model\CommentManager;
+    $commentManager->insertComment($idPost, $postContent);
+    $comments = $commentManager->getComments($idPost);
     $pageTitle = $post['titre'];
     require('./views/postView.php');
 }
@@ -27,7 +32,6 @@ function logIn(){
     $member = getMember($pseudo);
     $pageTitle = 'Connexion';
     require('./views/logInView.php');
-    
 }
 
 function subscribe($db) {
@@ -35,7 +39,7 @@ function subscribe($db) {
     $pageTitle = 'Inscription';
     $formError = "";
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $member = getMember($db, $_POST['pseudo']);
+        $member = getMember($_POST['pseudo']);
         $subscribeForm = [
             "pseudo" => htmlspecialchars($_POST['pseudo']),
             "passW" => htmlspecialchars($_POST['passW']),
@@ -47,9 +51,13 @@ function subscribe($db) {
             addNewMember($subscribeForm["passW"], $subscribeForm["pseudo"], $subscribeForm["email"]);
             require('./views/subscribeView.php');
             ggSubscribe();
+        } else {
+            require('./views/subscribeView.php');
         } 
+    } else {
+        require('./views/subscribeView.php');
     }
-    require('./views/subscribeView.php');
+    
 }
 
 function logOut() {
@@ -62,3 +70,14 @@ function logOut() {
     require('./views/logOutView.php');
 }
 
+function modifyComment() {
+    session_start();
+    $idComment = htmlspecialchars($_GET['id']);
+    $commentManager = new \Bouclette\TPBlog\Model\CommentManager;
+    $comment = $commentManager->getComment($idComment);
+    $idPost = $comment['idPost'];
+    $newComment = (isset($_POST['newComment'])) ? htmlspecialchars($_POST['newComment']) : NULL;
+    $commentManager->updateComment($newComment, $idComment, $idPost);
+    $pageTitle = 'Modifier votre commentaire';
+    require('./views/modifyCommentView.php');
+}

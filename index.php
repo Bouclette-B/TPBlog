@@ -21,6 +21,9 @@ try {
         elseif ($action == 'logOut'){
             logOut();
         }
+        elseif($action == 'modifyComment') {
+            modifyComment();
+        }
     }
     else {
         listPosts();

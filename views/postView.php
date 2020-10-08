@@ -39,7 +39,7 @@ foreach($comments as $comment){
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
-            <p><strong><?=$comment['author']?></strong>, le <?=$comment['dateComments']?></p>
+            <p><strong><?=$comment['author']?></strong>, le <?=$comment['dateComments']?><em><a href="index.php?action=modifyComment&amp;id=<?=$comment['id']?>"> Modifier</a></em></p>
             <p><em><?=$comment['comment']?></em></p>
         </div>
         <div class="col-2"></div>

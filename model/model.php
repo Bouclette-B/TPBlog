@@ -1,22 +1,8 @@
 <?php
 function connectToDataBase() {
-    try{
         $db = new PDO('mysql:host=localhost;dbname=tpblog;charset=utf8', 'root', '');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
-    catch(Exception $e)
-    {
-        die('Erreur : '.$e->getMessage());
-    }
     return $db;
-}
-
-function getPosts() {
-    $db = getDB();
-    $postsArray = $db->query('SELECT *, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date FROM posts ORDER BY id DESC LIMIT 5');
-    $posts = $postsArray->fetchAll();
-    $postsArray->closeCursor();
-    return $posts;
 }
 
 function getMember($pseudo) {
@@ -26,36 +12,6 @@ function getMember($pseudo) {
     $member = $memberArray->fetch();
     $memberArray->closeCursor();
     return $member;
-}
-
-function getPost($idPost) {
-    $db = getDB();
-    $postArray = $db->prepare('SELECT *, DATE_FORMAT(dateCreation, \'%d/%m/%Y à %Hh%imin%ss\') AS date FROM posts WHERE id = ?');
-    $postArray->execute(array($idPost));
-    $post = $postArray->fetch();
-    $postArray->closeCursor();
-    return $post;
-}
-
-function insertComment($idPost, $postContent) {
-    $db = getDB();
-    if(isset($postContent)){
-        $answer = $db->prepare('INSERT INTO comments (id, idPost, author, comment, dateComment) VALUES(NULL, :idPost, :author, :comment, NOW())');
-        $answer->execute(array(
-            'idPost' => $idPost, 
-            'author' => $_SESSION['pseudo'],
-            'comment' =>$postContent));
-        $answer->closeCursor();
-        }
-}
-
-function getComments($idPost) {
-    $db = getDB();
-    $commentsArray = $db->prepare('SELECT *, DATE_FORMAT(dateComment, \'%d/%m/%Y à %Hh%imin%ss\') AS dateComments FROM comments WHERE idPost = ? ORDER BY id DESC LIMIT 5');
-    $commentsArray->execute(array($idPost));
-    $comments = $commentsArray->fetchAll();
-    $commentsArray->closeCursor();
-    return $comments;
 }
 
 function addNewMember ($passW, $pseudo, $email) {
@@ -72,7 +28,7 @@ function addNewMember ($passW, $pseudo, $email) {
 
 function checkForm($subscribeForm, &$errorMsg) {
     $db = getDB();
-    $member = getMember($db, $subscribeForm["pseudo"]);
+    $member = getMember($subscribeForm["pseudo"]);
     if (!empty($member['pseudo'])) {
         $errorMsg = 'Ce pseudo est déjà pris !';
         return false;
