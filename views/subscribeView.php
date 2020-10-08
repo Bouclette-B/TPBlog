@@ -50,8 +50,14 @@
             <div class="col-3"></div>
             </div>
             <?php
-        } else {
-            
+        } elseif($subscriptionSuccess) {
+            ?>
+            <div class="row">
+                <div class="col-3"></div>
+                <p class="col-6">GG ! Inscription réussie :)</p>
+                <div class="col-3"></div>
+            </div>
+        <?php ;
         }
 
 function writeUserInfo($userInfo) {
@@ -88,13 +94,4 @@ function getCaptchaQuestion () {
 }
 $content = ob_get_clean();
 require('./template/template.php');
-
-function ggSubscribe() {?>
-    <div class="row">
-            <div class="col-3"></div>
-            <p class="col-6">GG ! Inscription réussie :)</p>
-            <div class="col-3"></div>
-        </div>
-        <?php ;
-}
 ?>

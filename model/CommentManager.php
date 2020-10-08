@@ -1,8 +1,4 @@
 <?php
-namespace Bouclette\TPBlog\Model;
-
-require_once('./model/Manager.php');
-
 class CommentManager extends Manager
 {
     public function insertComment($idPost, $postContent) {

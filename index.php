@@ -16,7 +16,7 @@ try {
             logIn();
         }
         elseif ($action == 'subscribe') {
-            subscribe($db);
+            subscribe();
         }
         elseif ($action == 'logOut'){
             logOut();

@@ -1,5 +1,4 @@
 <?php
-namespace Bouclette\TPBlog\Model;
 
 class Manager
 {

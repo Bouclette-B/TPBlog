@@ -1,8 +1,5 @@
 <?php
-namespace Bouclette\TPBlog\Model;
-
 require_once('./model/Manager.php');
-
 class PostManager extends Manager
 {
     public function getPosts() {
