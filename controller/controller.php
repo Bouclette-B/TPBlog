@@ -49,21 +49,26 @@ function subscribe() {
     $userManager = new UserManager;
     $formChecker = new FormChecker($userManager);
     $manager = new Manager;
-    $methodIsPost = $manager->isPost();
-    if ($methodIsPost) {
+    $userPseudo = $manager->writeUserInfo($_POST['pseudo']);
+    $userEmail = $manager->writeUserInfo($_POST['email']);
+    $captchaUserAnswer = $manager->isPost($_POST['captchaUserAnswer']);
+    if(!$captchaUserAnswer){
+        [$captchaQuestion, $captchaAnswer] = $formChecker->setCaptcha();
+    } else {
         $member = $userManager->getMember($_POST['pseudo']);
         $subscribeForm = [
             "pseudo" => htmlspecialchars($_POST['pseudo']),
             "passW" => htmlspecialchars($_POST['passW']),
             "checkPassW" => htmlspecialchars($_POST['checkPassW']),
             "email" => htmlspecialchars($_POST['email']),
-            "userAnswer" => htmlspecialchars($_POST['captchaAnswer'])
+            "userAnswer" => htmlspecialchars($_POST['captchaUserAnswer'])
         ];
+        [$captchaQuestion, $captchaAnswer] = $formChecker->memorizeCaptcha($captchaQuestion, $captchaAnswer);
         if($formChecker->checkForm($subscribeForm, $formError)){
             $userManager->addNewMember($subscribeForm["passW"], $subscribeForm["pseudo"], $subscribeForm["email"]);
             $subscriptionSuccess = true;
             $_SESSION['pseudo'] = $subscribeForm["pseudo"];
-        }
+        } 
     }
     require('./views/subscribeView.php');
 }

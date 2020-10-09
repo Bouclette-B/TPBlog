@@ -24,6 +24,12 @@ class Manager
         return false;
     }
 
+    public function  writeUserInfo($userInfo) {
+        if (isset($userInfo)) {
+            return htmlspecialchars($userInfo);
+        } 
+    }
+
     /*public function methodIsPost() {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             return true;
