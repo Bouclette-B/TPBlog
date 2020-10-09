@@ -14,4 +14,10 @@ class PostManager extends Manager
         $post->execute(array($idPost));
         return $post->fetch();
     }
+
+    public function checkPostExistence ($postID) {
+        if($postID && !(preg_match("#[^0-9]+#", $postID)) && strlen($postID) <= 3) { 
+            return true;
+        }
+    }
 }

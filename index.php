@@ -1,38 +1,41 @@
 <?php
 require ('./controller/controller.php');
 
-try {
-    if(isset($_GET['action'])) {
-        $action = $_GET['action'];
-        if($action == 'listPosts') {
+$manager = new Manager;
+$postManager = new PostManager;
+
+try { 
+    $action = $manager->isGet($_GET['action']);
+    switch($action) {
+        case 'listPosts' :
             listPosts();
-        }
-        elseif ($action == 'post') {
-            if(isset($_GET['id']) && !(preg_match("#[^0-9]+#", $_GET['id'])) && strlen($_GET['id']) <= 3) { 
+            break;
+        case 'post' :
+            $postID = $manager->isGet($_GET['id']);
+            $post = $postManager->checkPostExistence($postID);
+            if($post) { 
                 post();
-            }
-            else {
+            } else {
                 throw new Exception('Article non trouvé.');
             }
-        }
-        elseif ($action == 'logIn'){
+            break;
+        case 'logIn' :
             logIn();
-        }
-        elseif ($action == 'subscribe') {
+            break;
+        case 'subscribe' :
             subscribe();
-        }
-        elseif ($action == 'logOut'){
+            break;
+        case 'logOut' :
             logOut();
-        }
-        elseif($action == 'modifyComment') {
+            break;
+        case 'modifyComment' :
             modifyComment();
-        }
-    }
-    else {
-        listPosts();
+            break;
+        default :
+            listPosts();
     }
 }
-catch (Exception $e) {
+    catch (Exception $e) {
     $error = $e->getMessage();
     $pageTitle = 'Erreur :(';
     require('./views/errorView.php');

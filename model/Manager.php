@@ -9,8 +9,8 @@ class Manager
     }
 
     public function isGet($data) {
-        if(isset($_GET[$data])){
-            return $_GET[$data];
+        if(isset($data)){
+            return $data;
         }
         return false;
     }
