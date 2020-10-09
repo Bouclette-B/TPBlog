@@ -22,8 +22,8 @@ foreach ($posts as $post)
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
-            <h2><?= htmlspecialchars($post['titre']); ?> écrit le <?= htmlspecialchars($post['date']); ?></h2>
-            <p class=contenu><?= htmlspecialchars($post['contenu']); ?></p>
+            <h2><?= htmlspecialchars($post['title']); ?> écrit le <?= htmlspecialchars($post['date']); ?></h2>
+            <p class=contenu><?= htmlspecialchars($post['content']); ?></p>
             <a href="index.php?action=post&amp;id=<?= htmlspecialchars($post['id']); ?>">Commentaires...</a>
         </div>
         <div class="col-2"></div>

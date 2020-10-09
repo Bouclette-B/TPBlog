@@ -5,9 +5,9 @@ ob_start();
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
-            <h2><?=$post['titre']?></h2>
+            <h2><?=$post['title']?></h2>
             <p class="article-info"><em>Écrit le<?=$post['date']?></em></p>
-            <p class="article-content"><?=$post['contenu']?></p>
+            <p class="article-content"><?=$post['content']?></p>
         </div>
     </div>
 </div>
