@@ -8,8 +8,11 @@ try {
             listPosts();
         }
         elseif ($action == 'post') {
-            if(isset($_GET['id']) && !(preg_match("#[^0-9]+#", $_GET['id']))) { 
+            if(isset($_GET['id']) && !(preg_match("#[^0-9]+#", $_GET['id'])) && strlen($_GET['id']) <= 3) { 
                 post();
+            }
+            else {
+                throw new Exception('Article non trouvé.');
             }
         }
         elseif ($action == 'logIn'){

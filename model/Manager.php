@@ -7,4 +7,27 @@ class Manager
         $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         return $db;
     }
+
+    public function isGet($data) {
+        if(isset($_GET[$data])){
+            return $_GET[$data];
+        }
+        return false;
+    }
+
+    public function isPost($data=NULL) {
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($data)){
+            return $data;
+        } elseif($_SERVER['REQUEST_METHOD'] === 'POST'){
+            return true;
+        }
+        return false;
+    }
+
+    /*public function methodIsPost() {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            return true;
+        }
+        return false;
+    }*/
 }

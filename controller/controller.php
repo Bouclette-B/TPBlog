@@ -14,10 +14,11 @@ function listPosts() {
 
 function post() {
     session_start();
-    $idPost = (isset($_GET['id']) && strlen($_GET['id'])) ? htmlspecialchars($_GET['id']) : NULL;
-    $comment = (isset($_POST['content'])) ? htmlspecialchars($_POST['content']) : NULL;
     $postManager = new PostManager();
     $userManager = new UserManager();
+    $commentIsPost = $postManager->isPost($_POST['content']);
+    $comment = ($commentIsPost ? $commentIsPost : NULL);
+    $idPost = htmlspecialchars($_GET['id']);
     $post = $postManager->getPost($idPost);
     if(empty($post)){
         throw new Exception('Article non trouvé.');
@@ -32,7 +33,9 @@ function post() {
 
 function logIn(){
     $userManager = new UserManager;
-    $pseudo = (isset($_POST['pseudo'])) ? $_POST['pseudo'] : NULL;
+    $manager = new Manager;
+    $pseudoIsPost = $manager->isPost($_POST['pseudo']);
+    $pseudo = ($pseudoIsPost ? $pseudoIsPost: NULL);
     $member = $userManager->getMember($pseudo);
     $pageTitle = 'Connexion';
     require('./views/logInView.php');
@@ -45,7 +48,9 @@ function subscribe() {
     $subscriptionSuccess = false;
     $userManager = new UserManager;
     $formChecker = new FormChecker($userManager);
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $manager = new Manager;
+    $methodIsPost = $manager->isPost();
+    if ($methodIsPost) {
         $member = $userManager->getMember($_POST['pseudo']);
         $subscribeForm = [
             "pseudo" => htmlspecialchars($_POST['pseudo']),
@@ -65,7 +70,9 @@ function subscribe() {
 
 function logOut() {
     session_start();
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $manager = new Manager;
+    $methodIsPost = $manager->isPost();
+    if ($methodIsPost) {
         session_destroy();
         header('Location: index.php');
     }
@@ -79,7 +86,9 @@ function modifyComment() {
     $commentManager = new CommentManager;
     $comment = $commentManager->getComment($idComment);
     $idPost = $comment['idPost'];
-    $newComment = (isset($_POST['newComment'])) ? htmlspecialchars($_POST['newComment']) : NULL;
+    $manager = new Manager;
+    $newCommentIsPost = $manager->isPost($_POST['newComment']);
+    $newComment = ($newCommentIsPost ? htmlspecialchars($newCommentIsPost) : NULL);
     $commentManager->updateComment($newComment, $idComment, $idPost);
     $pageTitle = 'Modifier votre commentaire';
     require('./views/modifyCommentView.php');
